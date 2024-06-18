@@ -1,0 +1,18 @@
+{
+  "name": "nodeproject",
+  "version": "1.0.0",
+  "description": "Express and Node js first web application project",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js ",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Akhtataruzzaman Russel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongodb": "^6.7.0",
+    "mongoose": "^8.4.1",
+    "nodemon": "^3.1.3"
+  }
+}

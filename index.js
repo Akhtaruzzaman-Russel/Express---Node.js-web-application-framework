@@ -1,6 +1,8 @@
 const express = require("express");
 
 const app = express();
+
+// middleware
 const mongoose = require("mongoose");
 
 const User = require("./models/registrationModel")
@@ -15,8 +17,10 @@ mongoose.connect("mongodb+srv://nodejs:kjw2m4xSFLzJV6ev@cluster0.0ruzyeb.mongodb
 })
 
 
-
-
+// http functions for routing routes and controllers
+// app.get('/', (req, res) => {
+//   res.send("Hello World");
+// });
 
 
 
@@ -57,10 +61,25 @@ app.post("/createuser", (req, res) => {
    email: email,
    designation: designation
  })
-
+//  store registration in database
+ registrationSchema.save();
 
  res.send(registrationSchema)
 });
+
+
+// update/put method
+app.put("/update/:id", async (req, res) => {
+
+  const {id} = req.params
+
+  const updateUser = await User.findByIdAndUpdate(id, req.body)
+
+  res.send(updateUser)
+
+
+ });
+ 
 
 
 

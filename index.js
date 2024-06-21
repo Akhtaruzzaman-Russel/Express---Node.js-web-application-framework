@@ -71,14 +71,52 @@ app.post("/createuser", (req, res) => {
 // update/put method
 app.put("/update/:id", async (req, res) => {
 
-  const {id} = req.params
+      try {
+        const {id} = req.params
 
-  const updateUser = await User.findByIdAndUpdate(id, req.body)
+        const updateUser = await User.findByIdAndUpdate(id, req.body, {new: true})
+      
+        res.send(updateUser)
 
-  res.send(updateUser)
-
+      } catch (error){
+        console.log(error);
+      }
 
  });
+
+ // delete/delete method
+ app.delete("/delete/:id", async (req, res) => {
+
+      try {
+        const {id} = req.params
+
+        const deleteUser = await User.findByIdAndDelete(id)
+      
+        res.send(deleteUser)
+
+      } catch (error){
+        console.log(error);
+      }
+
+ });
+
+ // get/get method
+ app.get("/get/:id", async (req, res) => {
+
+      try {
+        const {id} = req.params
+
+        const getUser = await User.findById(id)
+      
+        res.send(getUser)
+
+      } catch (error){
+        console.log(error);
+      }
+
+ });
+
+ // get/get method
  
 
 

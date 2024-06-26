@@ -7,6 +7,11 @@ const mongoose = require("mongoose");
 
 const User = require("./models/registrationModel")
 
+const secureAPI = require("./middleware/secureAPI");
+const message = require ("./controller/message");
+const profile = require ("./controller/profile");
+const registrationController = require ("./controller/registrationController");
+
 // middleware
 app.use(express.json());
 
@@ -51,6 +56,9 @@ mongoose.connect("mongodb+srv://nodejs:kjw2m4xSFLzJV6ev@cluster0.0ruzyeb.mongodb
 // });
 
 // create/post method
+
+
+/* CRUD Operation Start ->> 
 
 app.post("/createuser", (req, res) => {
  const {firstName, lastName, userName, email, designation  } = req.body;
@@ -119,8 +127,23 @@ app.put("/update/:id", async (req, res) => {
  // get/get method
  
 
+CRUD Operation End */
 
 
+
+// 26.6.2024  Homework Class 6
+/*
+app.get("/message", secureAPI, function (req, res) {
   
+  console.log("Hi there, I am from Homepage")
+
+});
+
+  */
+
+
+app.get("/message", secureAPI, message);
+app.post("/registration", secureAPI, registrationController);
+app.get("/profile", secureAPI, profile);
 
 app.listen("8000")

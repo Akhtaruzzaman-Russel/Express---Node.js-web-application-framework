@@ -1,25 +1,32 @@
+require('dotenv').config()
+
 const express = require("express");
 
 const app = express();
 
+// database connection
+const dbConnection = require("./helper/dbConnection")
+dbConnection();
+
 // middleware
 const mongoose = require("mongoose");
 
-const User = require("./models/registrationModel")
+// const User = require("./models/registrationModel")
 
 const secureAPI = require("./middleware/secureAPI");
-const message = require ("./controller/message");
-const profile = require ("./controller/profile");
+// const message = require ("./controller/message");
+// const profile = require ("./controller/profile");
 const registrationController = require ("./controller/registrationController");
+const loginController = require("./controller/loginController");
 
 // middleware
 app.use(express.json());
 
 // database connection
 
-mongoose.connect("mongodb+srv://nodejs:kjw2m4xSFLzJV6ev@cluster0.0ruzyeb.mongodb.net/mydb?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
-  console.log("Database Connected");
-})
+// mongoose.connect("mongodb+srv://nodejs:kjw2m4xSFLzJV6ev@cluster0.0ruzyeb.mongodb.net/mydb?retryWrites=true&w=majority&appName=Cluster0").then(()=>{
+//   console.log("Database Connected");
+// })
 
 
 // http functions for routing routes and controllers
@@ -142,8 +149,13 @@ app.get("/message", secureAPI, function (req, res) {
   */
 
 
-app.get("/message", secureAPI, message);
+// app.get("/message", secureAPI, message);
+// app.get("/profile", secureAPI, profile);
+
+
+
 app.post("/registration", secureAPI, registrationController);
-app.get("/profile", secureAPI, profile);
+app.post("/login", secureAPI, loginController);
+
 
 app.listen("8000")

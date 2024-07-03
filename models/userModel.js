@@ -14,7 +14,11 @@ let userSchema = new Schema({
     password: {
         type: String,
         required: true
-    }
+    },
+    emailVerify: {
+        type: Boolean,
+        default: false
+    },
 });
 
 module.exports = mongoose.model("User", userSchema);

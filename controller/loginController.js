@@ -13,13 +13,19 @@ let login =async (req,res) => {
     bcrypt.compare(password, existingUser.password, function(err, result) {
         // result == true
         if(result) {
-                return res.status(200).send({
-                    message: "Login Successful",
-                  
-                    id: existingUser._id,
-                    name: existingUser.name,
-                    email: existingUser.email
-                   })
+                // console.log(existingUser);
+                if(existingUser.emailVerify){
+                    return res.status(200).send({
+                        message: "Login Successful",
+                        id: existingUser._id,
+                        name: existingUser.name,
+                        email: existingUser.email
+                    });
+                }else {
+                    return res.status(403).send("Please Verify Your Email");
+ 
+                }
+
         }
         else {
             return res.status(401).send("Incorrect Password");

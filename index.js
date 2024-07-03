@@ -18,6 +18,7 @@ const secureAPI = require("./middleware/secureAPI");
 // const profile = require ("./controller/profile");
 const registrationController = require ("./controller/registrationController");
 const loginController = require("./controller/loginController");
+const emailVerificationController = require("./controller/emailVerificationController");
 
 // middleware
 app.use(express.json());
@@ -156,6 +157,7 @@ app.get("/message", secureAPI, function (req, res) {
 
 app.post("/registration", secureAPI, registrationController);
 app.post("/login", secureAPI, loginController);
+app.get("/:email", emailVerificationController);
 
 
-app.listen("8000")
+app.listen("8000");

@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require("../models/userModel");
+const nodemailer = require("nodemailer");
 
 
 // Class o7 
@@ -11,13 +12,13 @@ let registrationController = async(req, res)=>{
 
 
     console.log(name, email, password);
-    if (name == "" ){
+    if (name == "" || name == undefined ){
        return res.status(400).send("Name is required");
     }
-    if (email == "" ){
+    if (email == "" || email == undefined){
         return  res.status(400).send("Email is required");
     }
-    if (password == "" ){
+    if (password == "" || password == undefined){
         return res.status(400).send("Password is required");
     }
 
@@ -27,7 +28,7 @@ let registrationController = async(req, res)=>{
     }
    
 
-    bcrypt.hash(password, 10, function(err, hash) {
+    bcrypt.hash(password, 10,async function(err, hash) {
         // Store hash in your password DB.
         console.log(hash); // Prints: $2b$10$kG7i57SOMG5sV.i18e8W9.eI28t/05OPR.K8wQ4v19.9...
         // res.send(hash);
@@ -40,6 +41,27 @@ let registrationController = async(req, res)=>{
         });
 
         user.save()
+
+        const transporter = nodemailer.createTransport({
+                service: "gmail",
+            auth: {
+              user: "zaman.russel911@gmail.com",
+              pass: "virn fwlf opwj caoj",
+            },
+          });
+          
+
+            const info = await transporter.sendMail({
+              from: 'My Blog Site', // sender address
+              to: user.email, // list of receivers
+              subject: "Email Verification", // Subject line
+
+              html: `<table border=0 cellpadding=0 cellspacing=0 role=presentation class=body><tr><td> <td class=container><div class=content><span class=preheader>This is preheader text. Some clients will show this text as a preview.</span><table border=0 cellpadding=0 cellspacing=0 role=presentation class=main><tr><td class=wrapper><p>Hi there<p>Sometimes you just want to send a simple HTML email with a simple design and clear call to action. This is it.<table border=0 cellpadding=0 cellspacing=0 role=presentation class="btn btn-primary"><tr><td align=left><table border=0 cellpadding=0 cellspacing=0 role=presentation><tr><td><h4> ${user.name} : <a href="http://localhost:8000/${user.email}" target=_blank> Verify Email Click Here</a></h4></table></table><p>This is a really simple email template. It's sole purpose is to get the recipient to click the button with no distractions.<p>Good luck! Hope it works.</table></div><td> </table>`, // html body
+            });
+          
+            console.log("Message sent: %s", info.messageId);
+            // Message sent: <d786aa62-4e0a-070a-47ed-0b0666549519@ethereal.email>
+     
 
        res.send({
         message: "Registration successful",

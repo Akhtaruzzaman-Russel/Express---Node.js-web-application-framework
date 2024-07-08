@@ -1,5 +1,6 @@
 let Blog = require("../models/blogModel");
 
+
 let blogPostController = (req,res) =>{
     const {title, description, image, postedBy} = req.body 
 

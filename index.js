@@ -11,6 +11,7 @@ dbConnection();
 // middleware
 const mongoose = require("mongoose");
 
+
 // const User = require("./models/registrationModel")
 
 const secureAPI = require("./middleware/secureAPI");
@@ -18,12 +19,16 @@ const secureAPI = require("./middleware/secureAPI");
 // const profile = require ("./controller/profile");
 const registrationController = require ("./controller/registrationController");
 const loginController = require("./controller/loginController");
-const blogPostController = require("./controller/blogPostController")
+const blogPostController = require("./controller/blogPostController");
+const getAllBlogController = require("./controller/getAllBlogController");
 const emailVerificationController = require("./controller/emailVerificationController");
+const multer  = require('multer')
 
 
 // middleware
 app.use(express.json());
+
+
 
 // database connection
 
@@ -155,13 +160,31 @@ app.get("/message", secureAPI, function (req, res) {
 // app.get("/message", secureAPI, message);
 // app.get("/profile", secureAPI, profile);
 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix)
+  }
+})
+
+const upload = multer({ storage: storage })
+
 
 
 app.post("/registration", secureAPI, registrationController);
 app.post("/login", secureAPI, loginController);
-app.post("/blogpost", secureAPI, blogPostController);
+app.post("/blogpost", secureAPI, upload.single('avatar'), blogPostController);
+app.get("/blogpost", secureAPI, getAllBlogController );
 
 app.get("/:email", emailVerificationController);
+
+
+
+
+
 
 
 app.listen("8000");

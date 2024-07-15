@@ -2,12 +2,15 @@ let Blog = require("../models/blogModel");
 
 
 let blogPostController = (req,res) =>{
-    const {title, description, image, postedBy} = req.body 
+
+    // console.log("req.file",req.file.path);
+
+    const {title, description,  postedBy} = req.body 
 
     let blog = new Blog({
         title: title,
         description: description,
-        image: image,
+        image: req.file.path,
         postedBy: postedBy
     })
 

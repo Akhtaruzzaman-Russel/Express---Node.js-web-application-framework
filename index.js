@@ -23,10 +23,15 @@ const blogPostController = require("./controller/blogPostController");
 const getAllBlogController = require("./controller/getAllBlogController");
 const emailVerificationController = require("./controller/emailVerificationController");
 const multer  = require('multer')
+const path = require('path');
+const categoryController = require('./controller/categoryController');
+const categoryDeleteController = require('./controller/categoryDeleteController');
+const categoryEditController = require('./controller/categoryEditController');
 
 
 // middleware
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 
 
@@ -165,8 +170,9 @@ const storage = multer.diskStorage({
     cb(null, './uploads')
   },
   filename: function (req, file, cb) {
+    // console.log("file",file)
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, file.fieldname + '-' + uniqueSuffix)
+    cb(null, uniqueSuffix + "-" + file.originalname  )
   }
 })
 
@@ -177,6 +183,9 @@ const upload = multer({ storage: storage })
 app.post("/registration", secureAPI, registrationController);
 app.post("/login", secureAPI, loginController);
 app.post("/blogpost", secureAPI, upload.single('avatar'), blogPostController);
+app.post("/createcategory", secureAPI,  categoryController);
+app.delete("/deletecategory/:id", secureAPI, categoryDeleteController );
+app.post("/editcategory",  categoryEditController );
 app.get("/blogpost", secureAPI, getAllBlogController );
 
 app.get("/:email", emailVerificationController);

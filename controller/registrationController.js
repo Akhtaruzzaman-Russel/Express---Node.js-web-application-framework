@@ -23,6 +23,7 @@ let registrationController = async(req, res)=>{
     }
 
     let existingUser = await User.findOne({email: email});
+    
     if (existingUser != null){
         return res.status(400).send("Email already exists");
     }
